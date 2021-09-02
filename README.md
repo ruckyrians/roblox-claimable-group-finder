@@ -1,7 +1,5 @@
-# roblox-unclaimed-group-finder
-Python 3 tool for finding unclaimed groups on Roblox. Supports multi-threading, multi-processing and HTTP proxies.
-
-This tool is able to check groups in the tens-of-millions per minute due to it's use of a batch API endpoint.
+# roblox-claimable-group-finder
+Python 3 tool for finding claimable groups on Roblox.
 
 # Usage
 ```bash
