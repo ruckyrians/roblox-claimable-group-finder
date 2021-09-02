@@ -1,11 +1,11 @@
 # roblox-unclaimed-group-finder
 Python 3 tool for finding unclaimed groups on Roblox. Supports multi-threading, multi-processing and HTTP proxies.
 
-This tool is able to achieve checks in the tens-of-millions per minute due to it's use of a batch API endpoint.
+This tool is able to check groups in the tens-of-millions per minute due to it's use of a batch API endpoint.
 
 # Usage
 ```bash
-python scanner.py --workers 16 --range 1-1.25m 2.5m-12m --cut-off 11.5m --webhook-url WEBHOOKURL
+python finder.py --workers 16 --range 1-1.25m 2.5m-12m --cut-off 11.5m --webhook-url WEBHOOKURL
 ```
 
 ```
