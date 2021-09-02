@@ -5,7 +5,7 @@ This tool is able to check groups in the tens-of-millions per minute due to it's
 
 # Usage
 ```bash
-python finder.py --workers 16 --range 1-1.25m 2.5m-12m --cut-off 11.5m
+python finder.py --workers 16 ---cut-off 11.5m -range 1-1.25m 2.5m-12m
 ```
 
 ```
