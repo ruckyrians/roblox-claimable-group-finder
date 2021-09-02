@@ -1,9 +1,6 @@
 from .utils import create_ssl_socket, shutdown_socket, make_embed, send_webhook
+from json import loads as json_loads
 from zlib import decompress
-try:
-    from orjson import loads as json_loads
-except ImportError:
-    from json import loads as json_loads
 import re
 
 BATCH_GROUP_PATTERN = re.compile(b'{"id":(\d+),.{25}.+?,"owner":(.)')
