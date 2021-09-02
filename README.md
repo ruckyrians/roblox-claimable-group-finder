@@ -5,7 +5,7 @@ This tool is able to achieve checks in the tens-of-millions per minute due to it
 
 # Usage
 ```bash
-python scanner.py --workers 16 --range 1-1.25m 2.5m-12m --cut-off 11.5m --webhook-url WEBHOOKURL
+python finder.py --workers 16 --range 1-1.25m 2.5m-12m --cut-off 11.5m --webhook-url WEBHOOKURL
 ```
 
 ```
