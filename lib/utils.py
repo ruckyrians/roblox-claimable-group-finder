@@ -9,6 +9,8 @@ import ssl
 if os_name == "nt":
     SetConsoleTitleW = __import__("ctypes").windll.kernel32.SetConsoleTitleW
 
+default_context = ssl.create_default_context()
+
 class ChunkCounter:
     def __init__(self):
         self._count = 0
@@ -62,9 +64,10 @@ def make_embed(group_info):
     )
 
 def create_ssl_socket(addr, ssl_context=None, proxy_addr=None, ssl_wrap=True, timeout=5):
-    if ssl_wrap:
-        ssl_context = ssl_context or ssl.create_default_context()
     sock = None
+    
+    if ssl_wrap:
+        ssl_context = ssl_context or default_context
     
     try:
         sock = socket.socket()
@@ -78,11 +81,18 @@ def create_ssl_socket(addr, ssl_context=None, proxy_addr=None, ssl_wrap=True, ti
                     "Proxy server did not return a correct response for tunnel request")
 
         if ssl_wrap:
-            sock = ssl_context.wrap_socket(sock, server_hostname=addr[0])
+            sock = ssl_context.wrap_socket(
+                sock,
+                suppress_ragged_eofs=False,
+                do_handshake_on_connect=False,
+                server_hostname=addr[0])
+            sock.do_handshake()
+        
         return sock
     
     except:
-        shutdown_socket(sock)
+        if sock:
+            shutdown_socket(sock)
         raise
 
 def shutdown_socket(sock):
