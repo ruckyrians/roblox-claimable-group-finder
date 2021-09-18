@@ -4,7 +4,6 @@ from zlib import decompress
 
 GROUP_API = "groups.roblox.com"
 GROUP_API_ADDR = (__import__("socket").gethostbyname(GROUP_API), 443)
-BATCH_GROUP_PATTERN = __import__("re").compile(b'\{"id":(\d+),.{25}.+?,"owner":(.)')
 BATCH_GROUP_REQUEST = (
     b"GET /v2/groups?groupIds=%b HTTP/1.1\n"
     b"Host:groups.roblox.com\n"
@@ -14,6 +13,19 @@ SINGLE_GROUP_REQUEST = (
     b"GET /v1/groups/%b HTTP/1.1\n"
     b"Host:groups.roblox.com\n"
     b"\n")
+
+def parse_batch_resp(data):
+    index = 10
+    found = []
+    while True:
+        id_index = data.find(b'"id":', index)
+        if id_index == -1: break
+        index = data.find(b",", id_index + 5)
+        gid = data[id_index + 5 : index]
+        index = data.find(b'"owner":', index) + 8
+        found.append((gid, data[index] == 123))
+        index += 5
+    return found
 
 def thread_func(thread_num, worker_num,
                 thread_barrier, thread_event,
@@ -58,10 +70,7 @@ def thread_func(thread_num, worker_num,
                 resp = resp.partition(b"\r\n\r\n")[2]
                 while resp[-1] != 0:
                     resp += sock.recv(1048576)
-                owner_status = {
-                    m[0]: m[1] == b"{"
-                    for m in BATCH_GROUP_PATTERN.findall(decompress(resp, -15))
-                }
+                owner_status = parse_batch_resp(decompress(resp, -15))
 
                 for gid in gid_chunk:
                     if gid not in owner_status:
