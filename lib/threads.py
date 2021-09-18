@@ -121,7 +121,7 @@ def thread_func(thread_num, worker_num,
                     gid_list.remove(gid)
                     gid_list_len -= 1
 
-                # Let the counter know that gid_chunk_size groups were checked.
+                # Let the counter know gid_chunk_size groups were checked.
                 check_counter.add(gid_chunk_size)
 
             except KeyboardInterrupt:
