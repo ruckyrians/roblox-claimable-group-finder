@@ -63,7 +63,7 @@ def make_embed(group_info):
         timestamp=datetime.now(timezone.utc).isoformat()
     )
 
-def make_http_socket(addr, timeout=5, proxy_addr=None, ssl_wrap=True):    
+def make_http_socket(addr, timeout=5, proxy_addr=None, ssl_wrap=True, hostname=None):    
     try:
         sock = None
         sock = socket.socket()
@@ -85,7 +85,7 @@ def make_http_socket(addr, timeout=5, proxy_addr=None, ssl_wrap=True):
                 sock,
                 suppress_ragged_eofs=False,
                 do_handshake_on_connect=False,
-                server_hostname=addr[0])
+                server_hostname=hostname or addr[0])
             sock.do_handshake()
         
         return sock

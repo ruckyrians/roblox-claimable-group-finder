@@ -1,9 +1,11 @@
 from .utils import make_http_socket, shutdown_socket, make_embed, send_webhook
 from json import loads as json_loads
 from zlib import decompress
+from socket import gethostbyname
 import re
 
-GROUP_API = ("groups.roblox.com", 443)
+GROUP_API = "groups.roblox.com"
+GROUP_API_ADDR = (gethostbyname(GROUP_API), 443)
 BATCH_GROUP_PATTERN = re.compile(b'\{"id":(\d+),.{25}.+?,"owner":(.)')
 BATCH_GROUP_REQUEST = (
     b"GET /v2/groups?groupIds=%b HTTP/1.1\n"
@@ -36,7 +38,7 @@ def thread_func(thread_num, worker_num,
         proxy_addr = next(proxy_iter) if proxy_iter else None
 
         try:
-            sock = make_http_socket(GROUP_API, timeout, proxy_addr)
+            sock = make_http_socket(GROUP_API_ADDR, timeout, proxy_addr, hostname=GROUP_API)
         except:
             continue
         
