@@ -1,12 +1,10 @@
 from .utils import make_http_socket, shutdown_socket, make_embed, send_webhook
 from json import loads as json_loads
 from zlib import decompress
-from socket import gethostbyname
-import re
 
 GROUP_API = "groups.roblox.com"
-GROUP_API_ADDR = (gethostbyname(GROUP_API), 443)
-BATCH_GROUP_PATTERN = re.compile(b'\{"id":(\d+),.{25}.+?,"owner":(.)')
+GROUP_API_ADDR = (__import__("socket").gethostbyname(GROUP_API), 443)
+BATCH_GROUP_PATTERN = __import__("re").compile(b'\{"id":(\d+),.{25}.+?,"owner":(.)')
 BATCH_GROUP_REQUEST = (
     b"GET /v2/groups?groupIds=%b HTTP/1.1\n"
     b"Host:groups.roblox.com\n"
@@ -22,6 +20,7 @@ def thread_func(thread_num, worker_num,
                 check_counter, proxy_iter,
                 gid_ranges, gid_cutoff, gid_chunk_size,
                 webhook_url, timeout):
+    gid_tracked = set()
     gid_list = [
         str(gid).encode()
         for gid_range in gid_ranges
@@ -29,7 +28,6 @@ def thread_func(thread_num, worker_num,
     ]
     gid_list_len = len(gid_list)
     gid_list_idx = 0
-    gid_tracked = set()
 
     thread_barrier.wait()
     thread_event.wait()
