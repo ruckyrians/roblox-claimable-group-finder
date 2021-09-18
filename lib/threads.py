@@ -14,10 +14,10 @@ SINGLE_GROUP_REQUEST = (
     b"Host:groups.roblox.com\n"
     b"\n")
 
-def parse_batch_resp(data, max):
+def parse_batch_resp(data):
     index = 10
     found = []
-    for _ in range(max):
+    while True:
         id_index = data.find(b'"id":', index)
         if id_index == -1: break
         index = data.find(b",", id_index + 5)
@@ -70,7 +70,7 @@ def thread_func(thread_num, worker_num,
                 resp = resp.partition(b"\r\n\r\n")[2]
                 while resp[-1] != 0:
                     resp += sock.recv(1048576)
-                owner_status = parse_batch_resp(decompress(resp, -15), gid_chunk_size)
+                owner_status = parse_batch_resp(decompress(resp, -15))
 
                 for gid in gid_chunk:
                     if gid not in owner_status:
