@@ -10,24 +10,26 @@ class Controller:
         self.count_queue = Queue()
         self.workers = []
         self.proxies = []
-
-        self.load_proxies()
+        
+        if self.arguments.proxy_file:
+            self.load_proxies()
+            
         self.start_workers()
         self.start_stat_thread()
 
     def load_proxies(self):
-        if not self.arguments.proxy_file:
-            return
-        with self.arguments.proxy_file:
-            while True:
-                line = self.arguments.proxy_file.readline()
-                if not line:
-                    break
+        proxies = set()
+        with self.arguments.proxy_file as fp:
+            while (line := fp.readline()):
                 try:
+                    line = line.rstrip()
                     host, _, port = line.partition(":")
-                    self.proxies.append((host, int(port)))
+                    addr = (host.lower(), int(port))
+                    if not addr in proxies:
+                        proxies.add(addr)
                 except Exception as err:
                     print(f"Error while loading proxy '{line}': {err!r}")
+        self.proxies.extend(proxies)
 
     def start_stat_thread(self):
         def stat_updater_func():
