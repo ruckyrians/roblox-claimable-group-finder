@@ -54,8 +54,7 @@ def make_embed(group_info):
         fields=[
             dict(name="Group Id", value=group_info["id"]),
             dict(name="Group Name", value=group_info["name"]),
-            dict(name="Group Members", value=group_info["memberCount"]),
-            dict(name="Group Funds", value=f"R$ {group_info['funds']}" if group_info.get("funds") is not None else "?")
+            dict(name="Group Members", value=group_info["memberCount"])
         ],
         footer=dict(
             text="github.com/h0nde/roblox-claimable-group-finder"

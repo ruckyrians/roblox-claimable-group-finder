@@ -19,8 +19,6 @@ python finder.py --workers 16 --cut-off 11.5m --range 1-1.25m 2.5m-12m --proxy-f
                         list of HTTP proxies, separated by newline
   -u WEBHOOK_URL, --webhook-url WEBHOOK_URL
                         found groups will be posted to this url
-  --get-funds GET_FUNDS
-                        attempt to obtain amount of funds in a group
   --chunk-size CHUNK_SIZE
                         amount of groups to be sent per API request
   --timeout TIMEOUT     timeout for server connections and responses
