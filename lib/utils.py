@@ -1,10 +1,13 @@
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
+from os import name as os_name
 import json
 import socket
 import threading
 import time
 import ssl
+if os_name == "nt":
+    SetConsoleTitleW = __import__("ctypes").windll.kernel32.SetConsoleTitleW
 
 ssl_context = ssl.create_default_context()
 
