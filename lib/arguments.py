@@ -18,21 +18,18 @@ def parse_args():
         "-w", "--workers",
         default=cpu_count(),
         type=int,
-        required=True,
         help="Number of workers",
         metavar="<num>")
     parser.add_argument(
         "-t", "--threads",
         default=50,
         type=int,
-        required=True,
         help="Number of threads (per worker)",
         metavar="<num>")
     parser.add_argument(
         "-r", "--range",
         nargs="+",
         type=parse_range,
-        required=True,
         help="Range(s) of group IDs",
         metavar="<range>")
     parser.add_argument(
@@ -54,14 +51,12 @@ def parse_args():
         "-C", "--chunk-size",
         default=100, 
         type=int,
-        required=True,
         help="Number of groups to be sent per batch request",
         metavar="<size>")
     parser.add_argument(
         "-T", "--timeout",
         default=5.0,
         type=float,
-        required=True,
         help="Timeout for connections and responses",
         metavar="<seconds>")
     arguments = parser.parse_args()
