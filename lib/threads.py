@@ -1,8 +1,9 @@
-from .utils import create_ssl_socket, shutdown_socket, make_embed, send_webhook
+from .utils import make_http_socket, shutdown_socket, make_embed, send_webhook
 from json import loads as json_loads
 from zlib import decompress
 import re
 
+GROUP_API = ("groups.roblox.com", 443)
 BATCH_GROUP_PATTERN = re.compile(b'\{"id":(\d+),.{25}.+?,"owner":(.)')
 BATCH_GROUP_REQUEST = (
     b"GET /v2/groups?groupIds=%b HTTP/1.1\n"
@@ -14,8 +15,9 @@ SINGLE_GROUP_REQUEST = (
     b"Host:groups.roblox.com\n"
     b"\n")
 
-def thread_func(thread_num, worker_num, thread_barrier, thread_event,
-                check_counter, ssl_context, proxy_iter,
+def thread_func(thread_num, worker_num,
+                thread_barrier, thread_event,
+                check_counter, proxy_iter,
                 gid_ranges, gid_cutoff, gid_chunk_size,
                 webhook_url, timeout):
     gid_list = [
@@ -34,11 +36,7 @@ def thread_func(thread_num, worker_num, thread_barrier, thread_event,
         proxy_addr = next(proxy_iter) if proxy_iter else None
 
         try:
-            sock = create_ssl_socket(
-                ("groups.roblox.com", 443),
-                ssl_context=ssl_context,
-                proxy_addr=proxy_addr,
-                timeout=timeout)
+            sock = make_http_socket(GROUP_API, timeout, proxy_addr)
         except:
             continue
         

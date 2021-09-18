@@ -1,15 +1,12 @@
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
-from os import name as os_name
 import json
 import socket
 import threading
 import time
 import ssl
-if os_name == "nt":
-    SetConsoleTitleW = __import__("ctypes").windll.kernel32.SetConsoleTitleW
 
-default_context = ssl.create_default_context()
+ssl_context = ssl.create_default_context()
 
 class ChunkCounter:
     def __init__(self):
@@ -35,15 +32,16 @@ def send_webhook(url, **kwargs):
         port = int(port)
     else:
         port = 443 if "https" in url else 80
-    sock = create_ssl_socket((hostname, port), ssl_wrap="https" in url)
+    sock = make_http_socket((hostname, port), ssl_wrap="https" in url)
     try:
-        sock.send(f"POST /{path} HTTP/1.1\r\n"
-                f"Host: {hostname}\r\n"
-                f"Content-Length: {len(payload)}\r\n"
-                "Content-Type: application/json\r\n"
-                "\r\n"
-                f"{payload}".encode())
-        sock.recv(1024 ** 2)
+        sock.send(
+            f"POST /{path} HTTP/1.1\r\n"
+            f"Host: {hostname}\r\n"
+            f"Content-Length: {len(payload)}\r\n"
+            "Content-Type: application/json\r\n"
+            "\r\n"
+            f"{payload}".encode())
+        sock.recv(4096)
     finally:
         shutdown_socket(sock)
 
@@ -62,20 +60,20 @@ def make_embed(group_info):
         timestamp=datetime.now(timezone.utc).isoformat()
     )
 
-def create_ssl_socket(addr, ssl_context=None, proxy_addr=None, ssl_wrap=True, timeout=5):
-    sock = None
-    
-    if ssl_wrap:
-        ssl_context = ssl_context or default_context
-    
+def make_http_socket(addr, timeout=5, proxy_addr=None, ssl_wrap=True):    
     try:
+        sock = None
         sock = socket.socket()
         sock.settimeout(timeout)
         sock.connect(proxy_addr or addr)
 
         if proxy_addr:
             sock.send(f"CONNECT {addr[0]}:{addr[1]} HTTP/1.1\r\n\r\n".encode())
-            if not sock.recv(1024).startswith(b"HTTP/1.1 20"):
+            connect_resp = sock.recv(4096)
+            if (
+                not connect_resp.startswith(b"HTTP/1.1 200")
+                and not connect_resp.startswith(b"HTTP/1.0 200")
+            ):
                 raise ConnectionRefusedError(
                     "Proxy server did not return a correct response for tunnel request")
 
@@ -119,10 +117,3 @@ def update_stats(text):
         SetConsoleTitleW(text)
     else:
         print(text)
-
-def set_cpu_affinity(cpu_num):
-    if os_name == "nt":
-        from .windows import set_cpu_affinity
-        return set_cpu_affinity(0, 1 << cpu_num)
-    else:
-        os.sched_setaffinity(0, [cpu_num])
