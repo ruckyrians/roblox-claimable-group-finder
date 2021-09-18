@@ -3,23 +3,25 @@ Python 3 tool for finding claimable groups on Roblox.
 
 # Usage
 ```bash
-python finder.py --workers 16 --cut-off 11.5m --range 1-1.25m 2.5m-12m --proxy-file proxies.txt
+python finder.py --workers 16 --range 1-1.25m 2.5m-12m --cut-off 11.5m --proxy-file proxies.txt
 ```
 
 ```
-  -t THREADS, --threads THREADS
-                        amount of threads per worker
-  -w WORKERS, --workers WORKERS
-                        amount of workers (processes)
-  -r RANGE [RANGE ...], --range RANGE [RANGE ...]
-                        range of group ids to be scanned
-  -c CUT_OFF, --cut-off CUT_OFF
-                        group ids past this point won't be blacklisted based on their current validity status
-  -p PROXY_FILE, --proxy-file PROXY_FILE
-                        list of HTTP proxies, separated by newline
-  -u WEBHOOK_URL, --webhook-url WEBHOOK_URL
-                        found groups will be posted to this url
-  --chunk-size CHUNK_SIZE
-                        amount of groups to be sent per API request
-  --timeout TIMEOUT     timeout for server connections and responses
+-h, --help            show this help message and exit
+-w <num>, --workers <num>
+                      Number of workers
+-t <num>, --threads <num>
+                      Number of threads (per worker)
+-r <range> [<range> ...], --range <range> [<range> ...]
+                      Range(s) of group IDs
+-p <file>, --proxy-file <file>
+                      File containing HTTP proxies
+-u <url>, --webhook-url <url>
+                      Send group results to <url>
+-c <id>, --cut-off <id>
+                      ID limit for skipping missing groups
+-C <size>, --chunk-size <size>
+                      Number of groups to be sent per batch request
+-T <seconds>, --timeout <seconds>
+                      Timeout for connections and responses
 ```
