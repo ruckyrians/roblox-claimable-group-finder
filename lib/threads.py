@@ -138,6 +138,7 @@ def thread_func(thread_num, worker_num,
                 exit()
             
             except Exception as err:
+                raise
                 break
             
         shutdown_socket(sock)
