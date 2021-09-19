@@ -52,7 +52,7 @@ def make_embed(group_info):
         title="Found claimable group",
         url=f"https://www.roblox.com/groups/{group_info['id']}",
         fields=[
-            dict(name="Group Id", value=group_info["id"]),
+            dict(name="Group ID", value=group_info["id"]),
             dict(name="Group Name", value=group_info["name"]),
             dict(name="Group Members", value=group_info["memberCount"])
         ],
