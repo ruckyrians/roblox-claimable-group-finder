@@ -71,7 +71,7 @@ def thread_func(thread_num, worker_num,
                 resp = resp.partition(b"\r\n\r\n")[2]
                 while resp[-1] != 0:
                     resp += sock.recv(1048576)
-                owner_status = parse_batch_response(decompress(resp, -15))
+                owner_status = parse_batch_response(decompress(resp, -15), gid_chunk_size)
 
                 for gid in gid_chunk:
                     if gid not in owner_status:
@@ -138,7 +138,6 @@ def thread_func(thread_num, worker_num,
                 exit()
             
             except Exception as err:
-                raise
                 break
             
         shutdown_socket(sock)
