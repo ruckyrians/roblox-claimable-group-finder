@@ -26,7 +26,7 @@ def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
     gid_list_len = len(gid_list)
     gid_list_idx = 0
 
-    while gid_chunk_size > gid_list_len:
+    while gid_list_len >= gid_chunk_size:
         proxy_addr = next(proxy_iter) if proxy_iter else None
         try:
             sock = make_http_socket(GROUP_API_ADDR, timeout, proxy_addr, hostname=GROUP_API)
