@@ -75,7 +75,7 @@ def thread_func(thread_num, worker_num,
 
                 for gid in gid_chunk:
                     if gid not in owner_status:
-                        # Details for this group weren't included in the response.
+                        # Group is missing from the batch response.
                         if not gid_cutoff or gid_cutoff > int(gid):
                             # Group is outside of cut-off range.
                             # Assume it doesn't exist and ignore it in the future.
