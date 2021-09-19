@@ -3,7 +3,7 @@ Python tool for finding claimable groups on Roblox.
 
 # Usage
 ```bash
-python finder.py --workers 16 --range 1-1.25m 2.5m-12m --cut-off 11.5m --proxy-file proxies.txt
+python finder.py --workers 16 --range 1-1.25m 2.5m-13m --cut-off 12.3m --proxy-file proxies.txt
 ```
 
 ```
