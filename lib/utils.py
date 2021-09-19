@@ -65,19 +65,15 @@ def make_embed(group_info):
 def make_http_socket(addr, timeout=5, proxy_addr=None, ssl_wrap=True, hostname=None):    
     sock = socket()
     sock.settimeout(timeout)
-
-    try:
-        sock.connect(proxy_addr or addr)
-    except:
-        raise
+    sock.connect(proxy_addr or addr)
     
     try:
         if proxy_addr:
             sock.send(f"CONNECT {addr[0]}:{addr[1]} HTTP/1.1\r\n\r\n".encode())
             connect_resp = sock.recv(4096)
-            if (
-                not connect_resp.startswith(b"HTTP/1.1 200")
-                and not connect_resp.startswith(b"HTTP/1.0 200")
+            if not (
+                connect_resp.startswith(b"HTTP/1.1 200")
+                or connect_resp.startswith(b"HTTP/1.0 200")
             ):
                 raise ConnectionRefusedError
 
