@@ -33,4 +33,4 @@ If the `--webhook-url` arg. is specified, a webhook with an embed will be sent w
 # Addressing the --cut-off arg.
 By default, when encountering a missing/deleted group, the group's ID will be removed from the queue so that it won't be checked again.
 
-The `--cut-off` argument specifies at which ID (and above) missing groups shouldn't be removed from the queue. This is ideal in scenarios where you wanna also scan groups that haven't been created yet.
+The `--cut-off` argument specifies at which ID (and above) missing groups shouldn't be removed from the queue. This is ideal in scenarios where you also wanna scan groups that haven't been created yet.
