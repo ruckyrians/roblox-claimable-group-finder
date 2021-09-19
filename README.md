@@ -7,7 +7,6 @@ python finder.py --workers 16 --range 1-1.25m 2.5m-13m --cut-off 12.3m --proxy-f
 ```
 
 ```
--h, --help            show this help message and exit
 -w <num>, --workers <num>
                       Number of workers
 -t <num>, --threads <num>
@@ -25,3 +24,13 @@ python finder.py --workers 16 --range 1-1.25m 2.5m-13m --cut-off 12.3m --proxy-f
 -T <seconds>, --timeout <seconds>
                       Timeout for connections and responses
 ```
+
+# Webhooks
+If the `--webhook-url` arg. is specified, a webhook with an embed will be sent whenever a claimable group is found. E.g.:
+
+![Embed Sample](https://i.imgur.com/VeMBoCA.png)
+
+# Addressing the --cut-off arg.
+By default, when encountering a missing/deleted group, the group's ID will be removed from the queue so that it won't be checked again.
+
+The `--cut-off` argument specifies at which ID (and above) missing groups shouldn't be removed from the queue. This is ideal in scenarios where you wanna also scan groups that haven't been created yet.
