@@ -1,4 +1,5 @@
-from .utils import make_http_socket, shutdown_socket, make_embed, send_webhook
+from .utils import parse_batch_response, make_http_socket, shutdown_socket,\
+    make_embed, send_webhook
 from json import loads as json_loads
 from zlib import decompress
 
@@ -14,25 +15,8 @@ SINGLE_GROUP_REQUEST = (
     b"Host:groups.roblox.com\n"
     b"\n")
 
-def parse_batch_response(data, limit):
-    index = 10
-    status = {}
-    for _ in range(limit):
-        id_index = data.find(b'"id":', index)
-        if id_index == -1:
-            break
-        index = data.find(b',', id_index + 5)
-        group_id = data[id_index + 5 : index]
-        index = data.find(b'"owner":', index) + 8
-        status[group_id] = (data[index] == 123)
-        index += 25
-    return status
-
-def thread_func(thread_num, worker_num,
-                thread_barrier, thread_event,
-                check_counter, proxy_iter,
-                gid_ranges, gid_cutoff, gid_chunk_size,
-                webhook_url, timeout):
+def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
+                gid_chunk_size, webhook_url, timeout):
     gid_tracked = set()
     gid_list = [
         str(gid).encode()
@@ -42,21 +26,14 @@ def thread_func(thread_num, worker_num,
     gid_list_len = len(gid_list)
     gid_list_idx = 0
 
-    thread_barrier.wait()
-    thread_event.wait()
-
-    while True:
+    while gid_chunk_size > gid_list_len:
         proxy_addr = next(proxy_iter) if proxy_iter else None
-
         try:
             sock = make_http_socket(GROUP_API_ADDR, timeout, proxy_addr, hostname=GROUP_API)
         except:
             continue
         
         while True:
-            if gid_chunk_size > gid_list_len:
-                return
-
             gid_chunk = [
                 gid_list[(gid_list_idx := gid_list_idx + 1) % gid_list_len]
                 for _ in range(gid_chunk_size)

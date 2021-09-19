@@ -6,7 +6,7 @@ from os import name as os_name
 from time import sleep
 
 if os_name == "nt":
-    SetConsoleTitleW = __import__("ctypes").windll.kernel32.SetConsoleTitleW
+    set_title = __import__("ctypes").windll.kernel32.SetConsoleTitleW
 
 ssl_context = __import__("ssl").create_default_context()
 
@@ -25,6 +25,20 @@ class ChunkCounter:
             count = self._count
             self._count = 0
             return count
+
+def parse_batch_response(data, limit):
+    index = 10
+    status = {}
+    for _ in range(limit):
+        id_index = data.find(b'"id":', index)
+        if id_index == -1:
+            break
+        index = data.find(b',', id_index + 5)
+        group_id = data[id_index + 5 : index]
+        index = data.find(b'"owner":', index) + 8
+        status[group_id] = (data[index] == 123)
+        index += 25
+    return status
 
 def send_webhook(url, **kwargs):
     payload = json_dumps(kwargs, separators=(",", ":"))
@@ -112,6 +126,6 @@ def slice_range(r, num, total):
 
 def update_stats(text):
     if os_name == "nt":
-        SetConsoleTitleW(text)
+        set_title(text)
     else:
         print(text)

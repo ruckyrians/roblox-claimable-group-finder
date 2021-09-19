@@ -1,18 +1,13 @@
 from .threads import thread_func
 from .utils import ChunkCounter, slice_range
-from threading import Thread, Event, Barrier
+from threading import Thread
 from time import time
 
-def worker_func(worker_num, worker_barrier, thread_count,
-                count_queue,
-                proxy_list,
-                gid_ranges,
-                **thread_kwargs):    
+def worker_func(thread_count, count_queue,
+                proxy_list, gid_ranges, **thread_kwargs):    
     check_counter = ChunkCounter()
-    proxy_iter = __import__("itertools").cycle(proxy_list) if proxy_list else None
-
-    thread_barrier = Barrier(thread_count + 1)
-    thread_event = Event()
+    proxy_iter = __import__("itertools").cycle(proxy_list) \
+                 if proxy_list else None
     threads = []
 
     for num in range(thread_count):
@@ -21,10 +16,6 @@ def worker_func(worker_num, worker_barrier, thread_count,
             name=f"Scanner-{num}",
             daemon=True,
             kwargs=dict(
-                thread_num=num,
-                worker_num=worker_num,
-                thread_barrier=thread_barrier,
-                thread_event=thread_event,
                 check_counter=check_counter,
                 proxy_iter=proxy_iter,
                 gid_ranges=[
@@ -38,9 +29,6 @@ def worker_func(worker_num, worker_barrier, thread_count,
     
     for thread in threads:
         thread.start()
-    thread_barrier.wait()
-    worker_barrier.wait()
-    thread_event.set()
     
     try:
         while any(t.is_alive() for t in threads):

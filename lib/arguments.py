@@ -1,22 +1,26 @@
-from multiprocessing import cpu_count
-import argparse
+from argparse import ArgumentParser
 
 def parse_human_number(s):
-    if s[-1] == "m":
+    s = s.lower()
+    if s.endswith("m"):
         s = int(float(s[:-1]) * 1000000)
+    elif s.endswith("k"):
+        s = int(float(s[:-1]) * 1000)
     else:
         s = int(s)
     return s
 
 def parse_range(range_string):
-    fields = tuple(map(parse_human_number, range_string.split("-", 1)))
-    return fields
+    start, end = range_string.split("-", 1)
+    start = parse_human_number(start)
+    end = parse_human_number(end)
+    return (start, end)
 
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument(
         "-w", "--workers",
-        default=cpu_count(),
+        default=8,
         type=int,
         help="Number of workers",
         metavar="<num>")
@@ -61,5 +65,5 @@ def parse_args():
         type=float,
         help="Timeout for connections and responses",
         metavar="<seconds>")
-    arguments = parser.parse_args()
-    return arguments
+    args = parser.parse_args()
+    return args
