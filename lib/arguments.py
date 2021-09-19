@@ -28,12 +28,14 @@ def parse_args():
         metavar="<num>")
     parser.add_argument(
         "-r", "--range",
+        required=True,
         nargs="+",
         type=parse_range,
         help="Range(s) of group IDs",
         metavar="<range>")
     parser.add_argument(
         "-p", "--proxy-file",
+        required=True,
         type=argparse.FileType("r", encoding="UTF-8", errors="ignore"),
         help="File containing HTTP proxies", 
         metavar="<file>")
