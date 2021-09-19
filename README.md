@@ -1,5 +1,5 @@
 # roblox-claimable-group-finder
-Python 3 tool for finding claimable groups on Roblox.
+Python tool for finding claimable groups on Roblox.
 
 # Usage
 ```bash
