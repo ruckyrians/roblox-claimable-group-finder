@@ -1,4 +1,4 @@
-from argparse import ArgumentParser
+import argparse
 
 def parse_human_number(s):
     s = s.lower()
@@ -17,7 +17,7 @@ def parse_range(range_string):
     return (start, end)
 
 def parse_args():
-    parser = ArgumentParser()
+    parser = argparse.ArgumentParser()
     parser.add_argument(
         "-w", "--workers",
         default=8,
