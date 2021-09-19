@@ -33,7 +33,7 @@ def send_webhook(url, **kwargs):
         hostname, port = hostname.split(":", 1)
         port = int(port)
     else:
-        port = 443 if "https" in url else 80
+        port = 443 if url.startswith("https") else 80
     sock = make_http_socket((hostname, port), ssl_wrap="https" in url)
     try:
         sock.send(
