@@ -26,7 +26,7 @@ python finder.py --workers 16 --range 1-1.25m 2.5m-13m --cut-off 12.3m --proxy-f
 ```
 
 # Webhooks
-If the `--webhook-url` arg. is specified, a webhook with an embed will be sent whenever a claimable group is found. E.g.:
+If the `--webhook-url` arg. is specified, an embed will be sent whenever a claimable group is found. E.g.:
 
 ![Embed Sample](https://i.imgur.com/VeMBoCA.png)
 
