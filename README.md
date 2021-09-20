@@ -31,6 +31,6 @@ If the `--webhook-url` arg. is specified, an embed will be sent whenever a claim
 ![Embed Sample](https://i.imgur.com/VeMBoCA.png)
 
 # --cut-off
-By default, when encountering a missing/deleted group, the group's ID will be removed from the queue so that it won't be checked again.
+By default, when encountering a missing/deleted group, it's ID will be removed from the queue so that it won't be checked again.
 
 The `--cut-off` argument specifies at which ID (and above) missing groups shouldn't be removed from the queue. This is ideal in scenarios where you also wanna scan groups that haven't been created yet.
