@@ -69,7 +69,7 @@ def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
 
                     # Group is marked as tracked and doesn't have an owner.
                     # Request extra details and determine if it's claimable.
-                    sock.send(SINGLE_GROUP_REQUEST % gid)
+                    sock.sendall(SINGLE_GROUP_REQUEST % gid)
                     resp = sock.recv(1048576)
                     if not resp.startswith(b"HTTP/1.1 200 OK"):
                         break
