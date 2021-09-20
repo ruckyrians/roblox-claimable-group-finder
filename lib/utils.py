@@ -42,12 +42,13 @@ def parse_batch_response(data, limit):
 def send_webhook(url, **kwargs):
     payload = json_dumps(kwargs, separators=(",", ":"))
     hostname, path = url.split("://", 1)[1].split("/", 1)
+    https = url.startswith("https")
     if ":" in hostname:
         hostname, port = hostname.split(":", 1)
         port = int(port)
     else:
-        port = 443 if url.startswith("https") else 80
-    sock = make_http_socket((hostname, port), ssl_wrap="https" in url)
+        port = 443 if https else 80
+    sock = make_http_socket((hostname, port), ssl_wrap=https)
     try:
         sock.send(
             f"POST /{path} HTTP/1.1\r\n"
