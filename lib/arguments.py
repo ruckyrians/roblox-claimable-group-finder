@@ -34,7 +34,7 @@ def parse_args():
         metavar="<num>")
     parser.add_argument(
         "-r", "--range",
-        default=(1, group_id),
+        default=((1, group_id),),
         nargs="+",
         type=parse_range,
         help="Range(s) of group IDs",
