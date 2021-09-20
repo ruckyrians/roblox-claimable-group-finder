@@ -76,7 +76,8 @@ def make_embed(group_info):
         timestamp=datetime.now(timezone.utc).isoformat()
     )
 
-def make_http_socket(addr, timeout=5, proxy_addr=None, ssl_wrap=True, hostname=None):    
+def make_http_socket(addr, timeout=5, proxy_addr=None,
+                     ssl_wrap=True, hostname=None):    
     sock = socket()
     sock.settimeout(timeout)
     sock.connect(proxy_addr or addr)
@@ -86,24 +87,21 @@ def make_http_socket(addr, timeout=5, proxy_addr=None, ssl_wrap=True, hostname=N
             sock.send(f"CONNECT {addr[0]}:{addr[1]} HTTP/1.1\r\n\r\n".encode())
             connect_resp = sock.recv(4096)
             if not (
-                connect_resp.startswith(b"HTTP/1.1 200")
-                or connect_resp.startswith(b"HTTP/1.0 200")
+                connect_resp.startswith(b"HTTP/1.1 200") or\
+                connect_resp.startswith(b"HTTP/1.0 200")
             ):
                 raise ConnectionRefusedError
 
         if ssl_wrap:
             sock = ssl_context.wrap_socket(
-                sock,
-                suppress_ragged_eofs=False,
-                do_handshake_on_connect=False,
-                server_hostname=hostname or addr[0])
+                sock, False, False, False, hostname or addr[0])
             sock.do_handshake()
+
+        return sock
 
     except:
         shutdown_socket(sock)
         raise
-
-    return sock
 
 def shutdown_socket(sock):
     try:
