@@ -1,3 +1,4 @@
+from .utils import find_latest_group_id
 import argparse
 
 def parse_human_number(s):
@@ -17,6 +18,7 @@ def parse_range(range_string):
     return (start, end)
 
 def parse_args():
+    group_id = find_latest_group_id()
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-w", "--workers",
@@ -32,7 +34,7 @@ def parse_args():
         metavar="<num>")
     parser.add_argument(
         "-r", "--range",
-        required=True,
+        default=(1, group_id),
         nargs="+",
         type=parse_range,
         help="Range(s) of group IDs",
@@ -50,6 +52,7 @@ def parse_args():
         metavar="<url>")
     parser.add_argument(
         "-c", "--cut-off",
+        default=group_id + 100000,
         type=parse_human_number,
         help="ID limit for skipping missing groups",
         metavar="<id>")

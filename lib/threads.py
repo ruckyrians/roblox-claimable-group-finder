@@ -1,19 +1,9 @@
+from .constants import GROUP_API, GROUP_API_ADDR, BATCH_GROUP_REQUEST,\
+    SINGLE_GROUP_REQUEST
 from .utils import parse_batch_response, make_http_socket, shutdown_socket,\
     make_embed, send_webhook
 from json import loads as json_loads
 from zlib import decompress
-
-GROUP_API = "groups.roblox.com"
-GROUP_API_ADDR = (__import__("socket").gethostbyname(GROUP_API), 443)
-BATCH_GROUP_REQUEST = (
-    b"GET /v2/groups?groupIds=%b HTTP/1.1\n"
-    b"Host:groups.roblox.com\n"
-    b"Accept-Encoding:deflate\n"
-    b"\n")
-SINGLE_GROUP_REQUEST = (
-    b"GET /v1/groups/%b HTTP/1.1\n"
-    b"Host:groups.roblox.com\n"
-    b"\n")
 
 def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
                 gid_chunk_size, webhook_url, timeout):

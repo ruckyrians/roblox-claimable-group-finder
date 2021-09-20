@@ -39,6 +39,25 @@ def parse_batch_response(data, limit):
         index += 25
     return status
 
+def find_latest_group_id():
+    gid = 0
+    sock = make_http_socket(("www.roblox.com", 443))
+
+    def exists(group_id):
+        sock.send(f"GET /groups/{group_id}/- HTTP/1.1\nHost:www.roblox.com\n\n".encode())
+        resp = sock.recv(1048576)
+        return not b"location: https://www.roblox.com/search/groups?keyword=" in resp
+
+    for l in range(8, 0, -1):
+        num = int("1" + ("0" * (l - 1)))
+        for inc in range(1, 10):
+            if inc == 9 or not exists(gid + (num * inc)):
+                gid += num * (inc - 1)
+                break
+    
+    shutdown_socket(sock)
+    return gid
+
 def send_webhook(url, **kwargs):
     payload = json_dumps(kwargs, separators=(",", ":"))
     hostname, path = url.split("://", 1)[1].split("/", 1)
