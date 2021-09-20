@@ -1,5 +1,4 @@
 from datetime import datetime, timezone
-from urllib.parse import urlsplit
 from json import dumps as json_dumps
 from socket import socket
 from os import name as os_name
