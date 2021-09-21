@@ -1,4 +1,13 @@
+DEFAULT_RANGES = (
+    # TODO: Resolve inaccuracies
+    (1, 1250000),
+    (2520000, 7960000),
+    (8000000, 9930000),
+    (9960000, 10760000),
+    (10790000, 12340000)
+)
 DEFAULT_ID_SLACK = 100000
+
 GROUP_API = "groups.roblox.com"
 GROUP_API_ADDR = (__import__("socket").gethostbyname(GROUP_API), 443)
 BATCH_GROUP_REQUEST = (

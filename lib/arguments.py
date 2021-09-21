@@ -1,4 +1,4 @@
-from .constants import DEFAULT_ID_SLACK
+from .constants import DEFAULT_ID_SLACK, DEFAULT_RANGES
 from .utils import find_latest_group_id
 import argparse
 
@@ -35,7 +35,10 @@ def parse_args():
         metavar="<num>")
     parser.add_argument(
         "-r", "--range",
-        default=((1, group_id + DEFAULT_ID_SLACK),),
+        default=(
+            *DEFAULT_RANGES,
+            (DEFAULT_RANGES[-1][1] + 1, group_id + DEFAULT_ID_SLACK),
+        ),
         nargs="+",
         type=parse_range,
         help="Range(s) of group IDs",
