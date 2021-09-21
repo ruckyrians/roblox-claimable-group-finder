@@ -25,8 +25,8 @@ def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
         
         while True:
             gid_chunk = [
-                gid_list[(gid_list_idx + (n + 1)) % gid_list_len]
-                for n in range(gid_chunk_size)
+                gid_list[(gid_list_idx + n) % gid_list_len]
+                for n in range(1, gid_chunk_size + 1)
             ]
             gid_list_idx += gid_chunk_size
 
