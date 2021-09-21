@@ -12,7 +12,7 @@ SINGLE_GROUP_REQUEST = (
 
 DEFAULT_ID_SLACK = 100000
 DEFAULT_RANGES = (
-    (0, 305),
+    (1, 305),
     (405, 3988),
     (4088, 5638),
     (5738, 9803),
