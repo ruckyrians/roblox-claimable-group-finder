@@ -1,3 +1,4 @@
+from .constants import DEFAULT_CUTOFF_SLACK
 from .utils import find_latest_group_id
 import argparse
 
@@ -34,7 +35,7 @@ def parse_args():
         metavar="<num>")
     parser.add_argument(
         "-r", "--range",
-        default=((1, group_id),),
+        default=((1, group_id + DEFAULT_CUTOFF_SLACK),),
         nargs="+",
         type=parse_range,
         help="Range(s) of group IDs",
@@ -52,7 +53,7 @@ def parse_args():
         metavar="<url>")
     parser.add_argument(
         "-c", "--cut-off",
-        default=group_id + 100000,
+        default=group_id + DEFAULT_CUTOFF_SLACK,
         type=parse_human_number,
         help="ID limit for skipping missing groups",
         metavar="<id>")
