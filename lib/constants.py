@@ -1,4 +1,4 @@
-DEFAULT_CUTOFF_SLACK = 100000
+DEFAULT_ID_SLACK = 100000
 GROUP_API = "groups.roblox.com"
 GROUP_API_ADDR = (__import__("socket").gethostbyname(GROUP_API), 443)
 BATCH_GROUP_REQUEST = (
