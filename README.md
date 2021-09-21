@@ -1,6 +1,12 @@
 # roblox-claimable-group-finder
 Python tool for finding claimable groups on Roblox.
 
+# Features
+- High-performance scanning (up to 50M+ checks-per-minute)
+- Zero dependencies
+- Automatic ID calibration on start
+- Webhook and HTTP proxy support
+
 # Usage
 ```bash
 python finder.py --workers 16 --proxy-file proxies.txt
