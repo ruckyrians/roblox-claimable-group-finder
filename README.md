@@ -2,7 +2,7 @@
 Python tool for finding claimable groups on Roblox.
 
 # Features
-- High-performance (up to 50M+ checks-per-minute)
+- High-performance scanning (up to 50M+ checks-per-minute)
 - Zero dependencies
 - Automatic ID calibration on start
 - Webhook and HTTP proxy support
