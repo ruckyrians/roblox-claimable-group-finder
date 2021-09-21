@@ -46,7 +46,7 @@ def parse_args():
     parser.add_argument(
         "-p", "--proxy-file",
         required=True,
-        type=argparse.FileType("r", encoding="UTF-8", errors="ignore"),
+        type=argparse.FileType("r", errors="ignore"),
         help="File containing HTTP proxies", 
         metavar="<file>")
     parser.add_argument(
