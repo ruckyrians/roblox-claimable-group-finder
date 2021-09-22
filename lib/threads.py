@@ -2,6 +2,7 @@ from .constants import GROUP_API, GROUP_API_ADDR, BATCH_GROUP_REQUEST,\
     SINGLE_GROUP_REQUEST
 from .utils import parse_batch_response, make_http_socket, shutdown_socket,\
     make_embed, send_webhook
+from datetime import datetime, timezone
 from json import loads as json_loads
 from zlib import decompress
 
@@ -85,15 +86,15 @@ def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
                         gid_list.remove(gid)
                         gid_list_len -= 1
                         continue
-
-                    print(" | ".join([
-                        f"roblox.com/groups/{gid.decode()}",
-                        f"{group_info['memberCount']} members",
-                        group_info["name"]
-                    ]))
-
+                    
+                    date = datetime.now(timezone.utc)
+                    print(f"[{date.strftime('%H:%M:%S')}] "
+                          f"roblox.com/groups/{gid.decode()} | "
+                          f"{group_info['memberCount']} members | "
+                          group_info["name"])
+                    
                     if webhook_url:
-                        send_webhook(webhook_url, embeds=(make_embed(group_info),))
+                        send_webhook(webhook_url, embeds=(make_embed(group_info, date),))
 
                     # Ignore group in the future.
                     gid_list.remove(gid)

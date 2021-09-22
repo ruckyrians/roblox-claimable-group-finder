@@ -80,7 +80,7 @@ def send_webhook(url, **kwargs):
     finally:
         shutdown_socket(sock)
 
-def make_embed(group_info):
+def make_embed(group_info, date):
     return dict(
         title="Found claimable group",
         url=f"https://www.roblox.com/groups/{group_info['id']}",
@@ -92,7 +92,7 @@ def make_embed(group_info):
         footer=dict(
             text="github.com/h0nde/roblox-claimable-group-finder"
         ),
-        timestamp=datetime.now(timezone.utc).isoformat()
+        timestamp=date.isoformat()
     )
 
 def make_http_socket(addr, timeout=5, proxy_addr=None,
