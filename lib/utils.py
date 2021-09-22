@@ -3,10 +3,10 @@ from time import sleep
 from json import dumps as json_dumps
 from os import name as os_name
 
+ssl_context = __import__("ssl").create_default_context()
+
 if os_name == "nt":
     set_title = __import__("ctypes").windll.kernel32.SetConsoleTitleW
-
-ssl_context = __import__("ssl").create_default_context()
 
 class ChunkCounter:
     def __init__(self):
