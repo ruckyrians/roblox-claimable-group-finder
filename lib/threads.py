@@ -91,7 +91,7 @@ def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
                     print(f"[{date.strftime('%H:%M:%S')}] "
                           f"roblox.com/groups/{gid.decode()} | "
                           f"{group_info['memberCount']} members | "
-                          group_info["name"])
+                          f"{group_info['name']}")
                     
                     if webhook_url:
                         send_webhook(webhook_url, embeds=(make_embed(group_info, date),))
