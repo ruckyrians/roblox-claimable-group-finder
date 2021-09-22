@@ -34,7 +34,7 @@ python finder.py --workers 16 --proxy-file proxies.txt
 # --webhook-url
 If the `--webhook-url` arg. is specified, an embed will be sent whenever a claimable group is found. E.g.:
 
-![Embed Sample](https://i.imgur.com/VeMBoCA.png)
+<img src="https://i.imgur.com/VeMBoCA.png" alt="Embed sample" width="400"/>
 
 # --cut-off
 By default, when encountering a missing/deleted group, it's ID will be removed from the queue so that it won't be checked again.
