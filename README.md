@@ -1,5 +1,5 @@
 # roblox-claimable-group-finder
-Python tool for finding claimable groups on Roblox.
+Tool for finding claimable groups on Roblox.
 
 # Features
 - High-performance scanning (up to 50M+ checks-per-minute)
