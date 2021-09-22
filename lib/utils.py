@@ -1,7 +1,7 @@
-from json import dumps as json_dumps
 from socket import socket
-from os import name as os_name
 from time import sleep
+from json import dumps as json_dumps
+from os import name as os_name
 
 if os_name == "nt":
     set_title = __import__("ctypes").windll.kernel32.SetConsoleTitleW
