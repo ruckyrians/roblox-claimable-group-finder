@@ -87,7 +87,7 @@ def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
                         continue
 
                     print(" | ".join([
-                        f"https://www.roblox.com/groups/{gid.decode()}",
+                        f"roblox.com/groups/{gid.decode()}",
                         f"{group_info['memberCount']} members",
                         group_info["name"]
                     ]))
