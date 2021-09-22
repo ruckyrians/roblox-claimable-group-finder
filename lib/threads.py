@@ -32,7 +32,7 @@ def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
 
             try:
                 # Request batch group details.
-                sock.send(BATCH_GROUP_REQUEST % b",".join(gid_chunk))
+                sock.sendall(BATCH_GROUP_REQUEST % b",".join(gid_chunk))
                 resp = sock.recv(1048576)
                 if not resp.startswith(b"HTTP/1.1 200 OK"):
                     break
