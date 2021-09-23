@@ -17,6 +17,9 @@ def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
     gid_list_len = len(gid_list)
     gid_list_idx = 0
 
+    if gid_cutoff:
+        gid_cutoff = str(gid_cutoff).encode()
+
     while gid_list_len >= gid_chunk_size:
         proxy_addr = next(proxy_iter) if proxy_iter else None
         try:
@@ -45,7 +48,7 @@ def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
                 for gid in gid_chunk:
                     if gid not in owner_status:
                         # Group is missing from the batch response.
-                        if not gid_cutoff or gid_cutoff > int(gid):
+                        if not gid_cutoff or gid_cutoff > gid:
                             # Group is outside of cut-off range.
                             # Assume it doesn't exist and ignore it in the future.
                             gid_list.remove(gid)
