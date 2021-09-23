@@ -56,7 +56,7 @@ def parse_args():
         metavar="<url>")
     parser.add_argument(
         "-c", "--cut-off",
-        default=group_id + DEFAULT_ID_SLACK,
+        default=group_id,
         type=parse_human_number,
         help="ID limit for skipping missing groups",
         metavar="<id>")
