@@ -32,10 +32,11 @@ def stat_updater(count_queue):
         added_new = False
         try:
             while True:
-                ts, count = count_queue.get(block=False)
-                ts = int(ts)
-                count_cache[ts] = count_cache.get(ts, 0) + count
-                added_new = True
+                for chunk in count_queue.get(block=False):
+                    for ts, count in chunk:
+                        ts = int(ts)
+                        count_cache[ts] = count_cache.get(ts, 0) + count
+                        added_new = True
         except:
             if not added_new:
                 continue

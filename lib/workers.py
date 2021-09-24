@@ -34,12 +34,15 @@ def worker_func(thread_count, log_queue, count_queue,
     
     try:
         while any(t.is_alive() for t in threads):
+            chunk = []
             while True:
                 try:
                     ts, count = local_count_queue.get(block=False)
-                    count_queue.put((ts, count))
+                    chunk.append((ts, count))
                 except Empty:
                     break
+            if chunk:
+                count_queue.put(chunk)
             sleep(1)
     except KeyboardInterrupt:
         pass
