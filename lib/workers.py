@@ -14,7 +14,7 @@ def worker_func(thread_count, log_queue, count_queue, proxy_list, gid_ranges,
     for thread_num in range(thread_count):
         thread = Thread(
             target=group_scanner,
-            name=f"Scanner-{num}",
+            name=f"Scanner-{thread_num}",
             daemon=True,
             kwargs=dict(
                 log_queue=log_queue,
