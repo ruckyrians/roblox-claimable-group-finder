@@ -1,7 +1,6 @@
 from .workers import worker_func
 from .threads import log_notifier, stat_updater
-from .utils import slice_list, slice_range, update_stats, send_webhook,\
-    make_embed
+from .utils import slice_list, slice_range
 from multiprocessing import Process, Queue
 from threading import Thread
 
