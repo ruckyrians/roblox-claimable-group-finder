@@ -136,7 +136,7 @@ def group_scanner(log_queue, count_queue, proxy_iter, gid_ranges, gid_cutoff,
                         continue
                     
                     date = datetime.now(timezone.utc)
-                    log_queue.append((date, group_info))
+                    log_queue.put((date, group_info))
                     
                     # Ignore group in the future.
                     gid_list.remove(gid)
