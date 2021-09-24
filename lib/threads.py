@@ -28,18 +28,15 @@ def stat_updater(count_queue):
 
     while True:
         sleep(0.1)
-        
-        added_new = False
-        try:
-            while True:
+
+        while True:
+            try:
                 for ts, count in count_queue.get(block=False):
                     ts = int(ts)
                     count_cache[ts] = count_cache.get(ts, 0) + count
-                    added_new = True
-        except Exception as err:
-            if not added_new:
-                continue
-        
+            except:
+                break
+            
         now = time()
         checks_within_last_minute = 0
 
