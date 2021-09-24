@@ -1,13 +1,58 @@
 from .constants import GROUP_API, GROUP_API_ADDR, BATCH_GROUP_REQUEST,\
     SINGLE_GROUP_REQUEST
 from .utils import parse_batch_response, make_http_socket, shutdown_socket,\
-    make_embed, send_webhook
+    update_stats
 from datetime import datetime, timezone
+from time import time, sleep, perf_counter
 from json import loads as json_loads
 from zlib import decompress
 
-def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
-                gid_chunk_size, webhook_url, timeout):
+def log_notifier(log_queue, webhook_url=None):
+    while True:
+        date, group_info = log_queue.get()
+
+        print(f"[{date.strftime('%H:%M:%S')}] "
+                f"roblox.com/groups/{group_info['id']} | "
+                f"{group_info['memberCount']} member(s) | "
+                f"{group_info['name']}")
+            
+        if webhook_url:
+            try:
+                send_webhook(
+                    webhook_url, embeds=(make_embed(group_info, date),))
+            except Exception as err:
+                print(f"Error while sending webhook: {err!r}")
+
+def stat_updater(count_queue):
+    count_cache = {}
+
+    while True:
+        sleep(0.1)
+        
+        added_new = False
+        try:
+            while True:
+                ts, count = count_queue.get(block=False)
+                ts = int(ts)
+                count_cache[ts] = count_cache.get(ts, 0) + count
+                added_new = True
+        except:
+            if not added_new:
+                continue
+        
+        now = time()
+        checks_within_last_minute = 0
+
+        for ts, count in tuple(count_cache.items()):
+            if now - ts > 60:
+                count_cache.pop(ts)
+                continue
+            checks_within_last_minute += count
+
+        update_stats(f"CPM: {checks_within_last_minute}")
+
+def group_scanner(log_queue, count_queue, proxy_iter, gid_ranges, gid_cutoff,
+                  gid_chunk_size, webhook_url, timeout):
     gid_tracked = set()
     gid_list = [
         str(gid).encode()
@@ -91,20 +136,14 @@ def thread_func(check_counter, proxy_iter, gid_ranges, gid_cutoff,
                         continue
                     
                     date = datetime.now(timezone.utc)
-                    print(f"[{date.strftime('%H:%M:%S')}] "
-                          f"roblox.com/groups/{gid.decode()} | "
-                          f"{group_info['memberCount']} members | "
-                          f"{group_info['name']}")
+                    log_queue.append((date, group_info))
                     
-                    if webhook_url:
-                        send_webhook(webhook_url, embeds=(make_embed(group_info, date),))
-
                     # Ignore group in the future.
                     gid_list.remove(gid)
                     gid_list_len -= 1
 
                 # Let the counter know gid_chunk_size groups were checked.
-                check_counter.add(gid_chunk_size)
+                count_queue.put((time(), gid_chunk_size))
 
             except KeyboardInterrupt:
                 exit()

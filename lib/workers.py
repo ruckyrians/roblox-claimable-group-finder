@@ -1,22 +1,24 @@
-from .threads import thread_func
-from .utils import ChunkCounter, slice_range
+from .threads import group_scanner
+from .utils import slice_range
+from queue import Queue, Empty
 from threading import Thread
-from time import time
+from time import time, sleep
 
-def worker_func(thread_count, count_queue,
+def worker_func(thread_count, log_queue, count_queue,
                 proxy_list, gid_ranges, **thread_kwargs):    
-    check_counter = ChunkCounter()
+    local_count_queue = Queue()
     proxy_iter = __import__("itertools").cycle(proxy_list) \
                  if proxy_list else None
     threads = []
 
     for num in range(thread_count):
         thread = Thread(
-            target=thread_func,
+            target=group_scanner,
             name=f"Scanner-{num}",
             daemon=True,
             kwargs=dict(
-                check_counter=check_counter,
+                log_queue=log_queue,
+                count_queue=local_count_queue,
                 proxy_iter=proxy_iter,
                 gid_ranges=[
                     slice_range(gid_range, num, thread_count)
@@ -32,6 +34,12 @@ def worker_func(thread_count, count_queue,
     
     try:
         while any(t.is_alive() for t in threads):
-            count_queue.put((time(), check_counter.wait(1)))
+            while True:
+                try:
+                    ts, count = local_count_queue.get(block=False)
+                    count_queue.put((ts, count))
+                except Empty:
+                    break
+            sleep(1)
     except KeyboardInterrupt:
         pass

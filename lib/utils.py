@@ -8,22 +8,6 @@ ssl_context = __import__("ssl").create_default_context()
 if os_name == "nt":
     set_title = __import__("ctypes").windll.kernel32.SetConsoleTitleW
 
-class ChunkCounter:
-    def __init__(self):
-        self._count = 0
-        self._lock = __import__("threading").Lock()
-    
-    def add(self, delta):
-        with self._lock:
-            self._count += delta
-        
-    def wait(self, interval):
-        sleep(interval)
-        with self._lock:
-            count = self._count
-            self._count = 0
-            return count
-
 def parse_batch_response(data, limit):
     index = 10
     status = {}

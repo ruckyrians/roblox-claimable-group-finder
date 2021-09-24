@@ -1,20 +1,24 @@
 from .workers import worker_func
-from .utils import slice_list, slice_range, update_stats
+from .threads import log_notifier, stat_updater
+from .utils import slice_list, slice_range, update_stats, send_webhook,\
+    make_embed
 from multiprocessing import Process, Queue
 from threading import Thread
-from time import time
 
 class Controller:
     def __init__(self, arguments):
         self.arguments = arguments
-        self.count_queue = Queue()
         self.workers = []
         self.proxies = []
+        self.count_queue = Queue()
+        self.log_queue = Queue()
         
         if self.arguments.proxy_file:
             self.load_proxies()
+
+        self.start_stat_updater()
+        self.start_log_notifier()
         self.start_workers()
-        self.start_stat_thread()
 
     def load_proxies(self):
         proxies = set()
@@ -29,7 +33,23 @@ class Controller:
                 except Exception as err:
                     print(f"Error while loading proxy '{line}': {err!r}")
         self.proxies.extend(proxies)
-            
+
+    def start_log_notifier(self):
+        thread = Thread(
+            target=log_notifier,
+            name="LogNotifier",
+            daemon=True,
+            args=(self.log_queue, self.arguments.webhook_url))
+        thread.start()
+
+    def start_stat_updater(self):            
+        thread = Thread(
+            target=stat_updater,
+            name="StatUpdater",
+            daemon=True,
+            args=(self.count_queue,))
+        thread.start()
+
     def start_workers(self):
         for num in range(self.arguments.workers):
             worker = Process(
@@ -38,6 +58,7 @@ class Controller:
                 daemon=True,
                 kwargs=dict(
                     thread_count=self.arguments.threads,
+                    log_queue=self.log_queue,
                     count_queue=self.count_queue,
                     proxy_list=slice_list(self.proxies, num, self.arguments.workers),
                     gid_ranges=[
@@ -57,19 +78,3 @@ class Controller:
     def join_workers(self):
         for worker in self.workers:
             worker.join()
-
-    def start_stat_thread(self):
-        def stat_updater_func():
-            count_cache = []
-            while any(w.is_alive() for w in self.workers):
-                count_cache.append(self.count_queue.get())
-                t = time()
-                count_cache = [x for x in count_cache if 60 > t - x[0]]
-                cpm = sum([x[1] for x in count_cache])
-                update_stats(f"CPM: {cpm}")
-            
-        thread = Thread(
-            target=stat_updater_func,
-            name="Stat-Thread",
-            daemon=True)
-        thread.start()
