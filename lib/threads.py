@@ -47,8 +47,8 @@ def stat_updater(count_queue):
         
         update_stats(f"CPM: {checks_within_last_minute}")
 
-def group_scanner(log_queue, count_queue, proxy_iter, gid_ranges, gid_cutoff,
-                  gid_chunk_size, webhook_url, timeout):
+def group_scanner(log_queue, count_queue, proxy_iter, timeout, webhook_url,
+                  gid_ranges, gid_cutoff, gid_chunk_size):
     gid_tracked = set()
     gid_list = [
         str(gid).encode()
@@ -131,8 +131,8 @@ def group_scanner(log_queue, count_queue, proxy_iter, gid_ranges, gid_cutoff,
                         gid_list_len -= 1
                         continue
                     
-                    date = datetime.now(timezone.utc)
-                    log_queue.put((date, group_info))
+                    # Send group info back to main process.
+                    log_queue.put((datetime.now(timezone.utc), group_info))
                     
                     # Ignore group in the future.
                     gid_list.remove(gid)

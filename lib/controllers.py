@@ -50,27 +50,28 @@ class Controller:
         thread.start()
 
     def start_workers(self):
-        for num in range(self.arguments.workers):
+        for worker_num in range(self.arguments.workers):
             worker = Process(
                 target=worker_func,
-                name=f"Worker-{num}",
+                name=f"Worker-{worker_num}",
                 daemon=True,
                 kwargs=dict(
                     thread_count=self.arguments.threads,
                     log_queue=self.log_queue,
                     count_queue=self.count_queue,
-                    proxy_list=slice_list(self.proxies, num, self.arguments.workers),
+                    proxy_list=slice_list(self.proxies, worker_num, self.arguments.workers),
+                    timeout=self.arguments.timeout
+                    webhook_url=self.arguments.webhook_url,
                     gid_ranges=[
-                        slice_range(gid_range, num, self.arguments.workers)
+                        slice_range(gid_range, worker_num, self.arguments.workers)
                         for gid_range in self.arguments.range
                     ],
                     gid_cutoff=self.arguments.cut_off,
-                    gid_chunk_size=self.arguments.chunk_size,
-                    webhook_url=self.arguments.webhook_url,
-                    timeout=self.arguments.timeout
+                    gid_chunk_size=self.arguments.chunk_size
                 )
             )
             self.workers.append(worker)
+        
         for worker in self.workers:
             worker.start()
 
