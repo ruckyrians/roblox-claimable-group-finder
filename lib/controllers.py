@@ -22,7 +22,9 @@ class Controller:
     def load_proxies(self):
         proxies = set()
         with self.arguments.proxy_file as fp:
+            line_num = 0
             while (line := fp.readline()):
+                line_num += 1
                 try:
                     line = line.rstrip()
                     host, _, port = line.partition(":")
@@ -30,7 +32,7 @@ class Controller:
                     if not addr in proxies:
                         proxies.add(addr)
                 except Exception as err:
-                    print(f"Error while loading proxy '{line}': {err!r}")
+                    print(f"Error while loading line {line_num} in proxy file: {err!r}")
         self.proxies.extend(proxies)
 
     def start_log_notifier(self):
