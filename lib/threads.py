@@ -37,8 +37,8 @@ def stat_updater(count_queue):
                         ts = int(ts)
                         count_cache[ts] = count_cache.get(ts, 0) + count
                         added_new = True
-        except:
-            raise
+        except Exception as err:
+            print(f"{err!r}")
             if not added_new:
                 continue
         
