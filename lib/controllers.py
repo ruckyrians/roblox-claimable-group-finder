@@ -60,7 +60,7 @@ class Controller:
                     log_queue=self.log_queue,
                     count_queue=self.count_queue,
                     proxy_list=slice_list(self.proxies, worker_num, self.arguments.workers),
-                    timeout=self.arguments.timeout
+                    timeout=self.arguments.timeout,
                     webhook_url=self.arguments.webhook_url,
                     gid_ranges=[
                         slice_range(gid_range, worker_num, self.arguments.workers)
