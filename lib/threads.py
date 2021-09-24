@@ -47,7 +47,7 @@ def stat_updater(count_queue):
                 continue
             checks_within_last_minute += count
         
-        update_stats(f"CPM: {checks_within_last_minute}")
+        update_stats(f"CPM: {checks_within_last_minute:,}")
 
 def group_scanner(log_queue, count_queue, proxy_iter, timeout, webhook_url,
                   gid_ranges, gid_cutoff, gid_chunk_size):
