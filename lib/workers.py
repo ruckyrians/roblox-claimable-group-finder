@@ -42,6 +42,7 @@ def worker_func(thread_count, log_queue, count_queue,
                 except Empty:
                     break
             if chunk:
+                print(chunk, "x")
                 count_queue.put(chunk)
             sleep(1)
     except KeyboardInterrupt:
