@@ -12,9 +12,9 @@ def log_notifier(log_queue, webhook_url=None):
         date, group_info = log_queue.get()
 
         print(f"[{date.strftime('%H:%M:%S')}] "
-                f"roblox.com/groups/{group_info['id']} | "
-                f"{group_info['memberCount']} member(s) | "
-                f"{group_info['name']}")
+              f"roblox.com/groups/{group_info['id']} | "
+              f"{group_info['memberCount']} member(s) | "
+              f"{group_info['name']}")
             
         if webhook_url:
             try:
