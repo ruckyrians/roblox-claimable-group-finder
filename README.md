@@ -9,6 +9,13 @@
 - Automatic ID calibration on start
 - Webhook and HTTP proxy support
 
+# Instructions
+0. Download the [latest release](https://www.python.org/downloads/) of Python and install it with the [Add to PATH](https://datatofish.com/wp-content/uploads/2018/10/0001_add_Python_to_Path.png) option checked.
+1. [Download](https://github.com/h0nde/roblox-claimable-group-finder/archive/refs/heads/main.zip) this repository and extract it to a folder.
+2. Create a `proxies.txt` file within the folder and fill it with your HTTP proxies.
+3. Click the `File` tab on your file explorer window, and then click `Open PowerShell`.
+4. Execute the following command: `python finder.py --workers 16 --proxy-file proxies.txt`
+
 # Usage
 ```bash
 python finder.py --workers 16 --proxy-file proxies.txt
