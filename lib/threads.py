@@ -48,7 +48,7 @@ def stat_updater(count_queue):
                 continue
             total_count += count
         
-        update_stats(f"Speed (1 min): {total_count:,}")
+        update_stats(f"Speed: {total_count:,}")
 
 def group_scanner(log_queue, count_queue, proxy_iter, timeout, webhook_url,
                   gid_ranges, gid_cutoff, gid_chunk_size):
