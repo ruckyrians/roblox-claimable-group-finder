@@ -7,7 +7,7 @@ from time import time, sleep, perf_counter
 from json import loads as json_loads
 from zlib import decompress
 
-def log_notifier(log_queue, webhook_url=None):
+def log_notifier(log_queue, webhook_url):
     while True:
         date, group_info = log_queue.get()
 
