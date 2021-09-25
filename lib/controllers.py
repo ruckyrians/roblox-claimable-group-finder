@@ -33,7 +33,7 @@ class Controller:
                         proxies.add(addr)
                 except Exception as err:
                     print(f"Error while loading line {line_num} in proxy file: {err!r}")
-        assert self.proxies, "Proxy file is empty."
+        assert proxies, "Proxy file is empty."
         self.proxies.extend(proxies)
 
     def start_log_notifier(self):
