@@ -1,6 +1,4 @@
 # roblox-claimable-group-finder
-<p align="center">Tool for finding claimable groups on Roblox.</p>
-
 <p align="center"><img src="https://i.imgur.com/131wdCq.png" height="300" width="637"></p>
 
 # Features
