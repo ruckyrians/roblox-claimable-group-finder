@@ -40,14 +40,15 @@ def stat_updater(count_queue):
                 break
             
         now = time()
-        checks_within_last_minute = 0
+        total_count = 0
+
         for ts, count in tuple(count_cache.items()):
             if now - ts > 60:
                 count_cache.pop(ts)
                 continue
-            checks_within_last_minute += count
+            total_count += count
         
-        update_stats(f"CPM: {checks_within_last_minute:,}")
+        update_stats(f"Speed (1 min): {total_count:,}")
 
 def group_scanner(log_queue, count_queue, proxy_iter, timeout, webhook_url,
                   gid_ranges, gid_cutoff, gid_chunk_size):

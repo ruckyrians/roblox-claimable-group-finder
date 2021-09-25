@@ -128,6 +128,6 @@ def slice_range(r, num, total):
 
 def update_stats(text):
     if os_name == "nt":
-        set_title(text)
+        set_title(f"Group Finder | {text}")
     else:
         print(text)
