@@ -14,7 +14,7 @@
 1. [Download](https://github.com/h0nde/roblox-claimable-group-finder/archive/refs/heads/main.zip) this repository and extract it to a folder.
 2. Create a `proxies.txt` file within the folder and fill it with your HTTP proxies.
 3. Click the `File` tab on your file explorer window, and then click `Open PowerShell`.
-4. Execute the following command: `python finder.py --workers 16 --proxy-file proxies.txt`
+4. Execute the command in the `Usage` section below.
 
 # Usage
 ```bash
