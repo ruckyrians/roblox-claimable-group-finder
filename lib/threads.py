@@ -16,7 +16,7 @@ def log_notifier(log_queue, webhook_url=None):
               "|",
               f"{str(group_info['memberCount']).rjust(2)} member(s)",
               "|",
-              group_info['name'])
+              group_info["name"])
             
         if webhook_url:
             try:
