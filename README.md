@@ -38,10 +38,6 @@ python finder.py --workers 16 --proxy-file proxies.txt
                       Timeout for connections and responses
 ```
 
-# Things to note
-- Ownerless groups will be ignored on the first cycle of scanning (regardless of approval-only or locked status).
-- Proxies are required as of 2021-09.
-
 # --webhook-url
 If the `--webhook-url` arg. is specified, an embed will be sent whenever a claimable group is found. E.g.:
 
