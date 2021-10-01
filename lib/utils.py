@@ -12,7 +12,7 @@ if os_name == "nt":
 def parse_proxy_string(proxy_str):
     proxy_str = proxy_str.rpartition("://")[2]
     auth, _, fields = proxy_str.rpartition("@")
-    fields = fields.split(":", 3)
+    fields = fields.split(":", 2)
 
     if len(fields) == 2:
         hostname, port = fields
@@ -21,9 +21,9 @@ def parse_proxy_string(proxy_str):
         addr = (hostname.lower(), int(port))
         return auth, addr
 
-    elif len(fields) == 4:
-        hostname, port, username, password = fields
-        auth = "Basic " + b64encode((username + ":" + password).encode()).decode()
+    elif len(fields) == 3:
+        hostname, port, auth = fields
+        auth = "Basic " + b64encode(auth.encode()).decode()
         addr = (hostname.lower(), int(port))
         return auth, addr
     
