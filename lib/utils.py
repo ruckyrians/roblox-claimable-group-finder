@@ -51,18 +51,14 @@ def find_latest_group_id():
         sock.send(f"GET /groups/{group_id}/- HTTP/1.1\nHost:www.roblox.com\n\n".encode())
         resp = sock.recv(1048576)
         return not b"location: https://www.roblox.com/search/groups?keyword=" in resp
-    
-    try:
-        for l in range(8, 0, -1):
-            num = int("1" + ("0" * (l - 1)))
-            for inc in range(1, 10):
-                if inc == 9 or not exists(gid + (num * inc)):
-                    gid += num * (inc - 1)
-                    break
-        return gid
-        
-    finally:
-        shutdown_socket(sock)
+
+    for l in range(8, 0, -1):
+        num = int("1" + ("0" * (l - 1)))
+        for inc in range(1, 10):
+            if inc == 9 or not exists(gid + (num * inc)):
+                gid += num * (inc - 1)
+                break
+    return gid
 
 def send_webhook(url, **kwargs):
     payload = json_dumps(kwargs, separators=(",", ":"))
