@@ -1,6 +1,6 @@
 from .workers import worker_func
 from .threads import log_notifier, stat_updater
-from .utils import slice_list, slice_range
+from .utils import slice_list, slice_range, parse_proxy_string
 from multiprocessing import Process, Queue
 from threading import Thread
 
@@ -24,15 +24,14 @@ class Controller:
         with self.arguments.proxy_file as fp:
             line_num = 0
             while (line := fp.readline()):
-                line_num += 1
                 try:
-                    line = line.rstrip()
-                    host, _, port = line.partition(":")
-                    addr = (host.lower(), int(port))
-                    if not addr in proxies:
-                        proxies.add(addr)
+                    proxy = parse_proxy_string(line.rstrip())
+                    if not proxy in proxies:
+                        proxies.add(proxy)
                 except Exception as err:
-                    print(f"Error while loading line {line_num} in proxy file: {err!r}")
+                    print(f"Error while parsing line {line_num+1} in proxy file: {err!r}")
+                finally:
+                    line_num += 1
         assert proxies, "Proxy file is empty."
         self.proxies.extend(proxies)
 

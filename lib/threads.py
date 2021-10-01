@@ -65,9 +65,14 @@ def group_scanner(log_queue, count_queue, proxy_iter, timeout, webhook_url,
         gid_cutoff = str(gid_cutoff).encode()
 
     while gid_list_len >= gid_chunk_size:
-        proxy_addr = next(proxy_iter) if proxy_iter else None
+        proxy_auth, proxy_addr = next(proxy_iter) if proxy_iter else (None, None)
         try:
-            sock = make_http_socket(GROUP_API_ADDR, timeout, proxy_addr, hostname=GROUP_API)
+            sock = make_http_socket(
+                GROUP_API_ADDR,
+                timeout,
+                proxy_addr,
+                proxy_headers={"Authorization": proxy_auth} if proxy_auth else {},
+                hostname=GROUP_API)
         except:
             continue
         

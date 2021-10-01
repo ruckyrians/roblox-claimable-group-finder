@@ -2,11 +2,31 @@ from socket import socket
 from time import sleep
 from json import dumps as json_dumps
 from os import name as os_name
+from base64 import b64encode
 
 ssl_context = __import__("ssl").create_default_context()
 
 if os_name == "nt":
     set_title = __import__("ctypes").windll.kernel32.SetConsoleTitleW
+
+def parse_proxy_string(proxy_str):
+    auth, _, fields = proxy_str.rpartition("@")
+    fields = fields.split(":", 3)
+
+    if len(fields) == 2:
+        hostname, port = fields
+        if auth:
+            auth = "Basic " + b64encode(auth.encode()).decode()
+        addr = (hostname.lower(), int(port))
+        return auth, addr
+
+    elif len(fields) == 4:
+        hostname, port, username, password = fields
+        auth = "Basic " + b64encode((username + ":" + password).encode()).decode()
+        addr = (hostname.lower(), int(port))
+        return auth, addr
+    
+    raise Exception(f"Unrecognized proxy format: {proxy_str}")
 
 def parse_batch_response(data, limit):
     index = 10
@@ -80,7 +100,7 @@ def make_embed(group_info, date):
         timestamp=date.isoformat()
     )
 
-def make_http_socket(addr, timeout=5, proxy_addr=None,
+def make_http_socket(addr, timeout=5, proxy_addr=None, proxy_headers=None,
                      ssl_wrap=True, hostname=None):    
     sock = socket()
     sock.settimeout(timeout)
@@ -88,7 +108,14 @@ def make_http_socket(addr, timeout=5, proxy_addr=None,
     
     try:
         if proxy_addr:
-            sock.send(f"CONNECT {addr[0]}:{addr[1]} HTTP/1.1\r\n\r\n".encode())
+            sock.send("".join([
+                f"CONNECT {addr[0]}:{addr[1]} HTTP/1.1\r\n",
+                *([
+                    f"{header}: {value}\r\n"
+                    for header, value in proxy_headers.items()
+                ] if proxy_headers else []),
+                "\r\n"
+            ]).encode())
             connect_resp = sock.recv(4096)
             if not (
                 connect_resp.startswith(b"HTTP/1.1 200") or\
