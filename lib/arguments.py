@@ -65,12 +65,12 @@ def parse_args():
         default=100, 
         type=int,
         help="Number of groups to be sent per batch request",
-        metavar="<size>")
+        metavar="<num>")
     parser.add_argument(
         "-T", "--timeout",
         default=5.0,
         type=float,
         help="Timeout for connections and responses",
-        metavar="<seconds>")
+        metavar="<float>")
     args = parser.parse_args()
     return args
