@@ -36,7 +36,7 @@ def parse_batch_response(data, limit):
         id_index = data.find(b'"id":', index)
         if id_index == -1:
             break
-        index = data.find(b',', id_index + 5)
+        index = data.find(b",", id_index + 5)
         group_id = data[id_index + 5 : index]
         index = data.find(b'"owner":', index) + 8
         status[group_id] = (data[index] == 123)
