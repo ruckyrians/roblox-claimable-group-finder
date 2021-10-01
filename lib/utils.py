@@ -44,7 +44,7 @@ def parse_batch_response(data, limit):
     return status
 
 def find_latest_group_id():
-    gid = 0
+    group_id = 0
     sock = make_http_socket(("www.roblox.com", 443))
 
     def exists(group_id):
@@ -55,10 +55,11 @@ def find_latest_group_id():
     for l in range(8, 0, -1):
         num = int("1" + ("0" * (l - 1)))
         for inc in range(1, 10):
-            if inc == 9 or not exists(gid + (num * inc)):
-                gid += num * (inc - 1)
+            if inc == 9 or not exists(group_id + (num * inc)):
+                group_id += num * (inc - 1)
                 break
-    return gid
+
+    return group_id
 
 def send_webhook(url, **kwargs):
     payload = json_dumps(kwargs, separators=(",", ":"))
