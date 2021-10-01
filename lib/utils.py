@@ -10,6 +10,7 @@ if os_name == "nt":
     set_title = __import__("ctypes").windll.kernel32.SetConsoleTitleW
 
 def parse_proxy_string(proxy_str):
+    proxy_str = proxy_str.rpartition("://")[2]
     auth, _, fields = proxy_str.rpartition("@")
     fields = fields.split(":", 3)
 
