@@ -1,13 +1,9 @@
 from socket import socket
 from time import sleep
 from json import dumps as json_dumps
-from os import name as os_name
 from base64 import b64encode
 
 ssl_context = __import__("ssl").create_default_context()
-
-if os_name == "nt":
-    set_title = __import__("ctypes").windll.kernel32.SetConsoleTitleW
 
 def parse_proxy_string(proxy_str):
     proxy_str = proxy_str.rpartition("://")[2]
@@ -152,7 +148,4 @@ def slice_range(r, num, total):
     )
 
 def update_stats(text):
-    if os_name == "nt":
-        set_title(f"Group Finder | {text}")
-    else:
-        print(text)
+    print(text, end="\r")
