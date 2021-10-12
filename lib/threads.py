@@ -1,7 +1,7 @@
 from .constants import GROUP_API, GROUP_API_ADDR, BATCH_GROUP_REQUEST,\
     SINGLE_GROUP_REQUEST
 from .utils import parse_batch_response, make_http_socket, shutdown_socket,\
-    update_stats, send_webhook, make_embed
+    send_webhook, make_embed
 from datetime import datetime, timezone
 from time import time, sleep, perf_counter
 from json import loads as json_loads
@@ -27,8 +27,6 @@ def stat_updater(count_queue):
     count_cache = {}
 
     while True:
-        sleep(0.1)
-
         while True:
             try:
                 for ts, count in count_queue.get(block=False):
@@ -39,14 +37,14 @@ def stat_updater(count_queue):
             
         now = time()
         total_count = 0
-
         for ts, count in tuple(count_cache.items()):
             if now - ts > 60:
                 count_cache.pop(ts)
                 continue
             total_count += count
         
-        update_stats(f"Speed: {total_count:,}")
+        print(f"Speed: {total_count/1e6:.2f}M", end="\r")
+        sleep(0.1)
 
 def group_scanner(log_queue, count_queue, proxy_iter, timeout, webhook_url,
                   gid_ranges, gid_cutoff, gid_chunk_size):

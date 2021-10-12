@@ -146,6 +146,3 @@ def slice_range(r, num, total):
         r[0] + (num * per),
         r[0] + ((num + 1) * per)
     )
-
-def update_stats(text):
-    print(text, end="\r")
