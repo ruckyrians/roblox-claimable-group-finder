@@ -43,7 +43,7 @@ def stat_updater(count_queue):
                 continue
             total_count += count
         
-        print(f"Speed: {total_count/1e6:.2f}M", end="\r")
+        print(f"Speed: {total_count/1e6:.2f}M per minute", end="\r")
         sleep(0.1)
 
 def group_scanner(log_queue, count_queue, proxy_iter, timeout, webhook_url,
