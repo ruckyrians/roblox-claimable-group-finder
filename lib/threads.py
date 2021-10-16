@@ -3,7 +3,7 @@ from .constants import GROUP_API, GROUP_API_ADDR, BATCH_GROUP_REQUEST,\
 from .utils import parse_batch_response, make_http_socket, shutdown_socket,\
     send_webhook, make_embed
 from datetime import datetime, timezone
-from time import time, sleep, perf_counter
+from time import time, sleep
 from json import loads as json_loads
 from zlib import decompress
 
