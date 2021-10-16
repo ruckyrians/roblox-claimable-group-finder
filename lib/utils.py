@@ -1,5 +1,5 @@
+from .constants import EMBED_FOOTER_TEXT
 from socket import socket
-from time import sleep
 from json import dumps as json_dumps
 from base64 import b64encode
 
@@ -89,7 +89,7 @@ def make_embed(group_info, date):
             dict(name="Group Members", value=group_info["memberCount"])
         ],
         footer=dict(
-            text="github.com/h0nde/roblox-claimable-group-finder"
+            text=EMBED_FOOTER_TEXT
         ),
         timestamp=date.isoformat()
     )

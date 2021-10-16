@@ -2,7 +2,7 @@ from .threads import group_scanner
 from .utils import slice_range
 from queue import Queue, Empty
 from threading import Thread
-from time import time, sleep
+from time import sleep
 
 def worker_func(thread_count, log_queue, count_queue, proxy_list, gid_ranges,
                 **thread_kwargs):    
