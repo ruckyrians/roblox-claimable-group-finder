@@ -46,7 +46,7 @@ def stat_updater(count_queue):
         print(f"Speed: {total_count/1e6:.2f}m RPM", end="\r")
         sleep(0.1)
 
-def group_scanner(log_queue, count_queue, proxy_iter, timeout, webhook_url,
+def group_scanner(log_queue, count_queue, proxy_iter, timeout,
                   gid_ranges, gid_cutoff, gid_chunk_size):
     gid_tracked = set()
     gid_list = [
