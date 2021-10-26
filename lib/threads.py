@@ -67,7 +67,7 @@ def group_scanner(log_queue, count_queue, proxy_iter, timeout,
                 GROUP_API_ADDR,
                 timeout,
                 proxy_addr,
-                proxy_headers={"Proxy-Authorization": proxy_auth} if proxy_auth else {},
+                proxy_headers={"Proxy-Authenticate": proxy_auth} if proxy_auth else {},
                 hostname=GROUP_API)
         except:
             continue
