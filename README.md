@@ -1,6 +1,9 @@
 # roblox-claimable-group-finder
 <p align="center"><img src="https://i.imgur.com/131wdCq.png" height="300" width="637"></p>
 
+# Don't waste your time
+I have an [instance](https://www.roblox.com/games/7963219872) of this scanner running at 45m RPM, feel free to use it.
+
 # Features
 - High-performance scanning (up to 50M+ checks-per-minute)
 - Zero dependencies
