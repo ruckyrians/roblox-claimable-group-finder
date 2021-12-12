@@ -66,18 +66,23 @@ def send_webhook(url, **kwargs):
         port = int(port)
     else:
         port = 443 if https else 80
-    sock = make_http_socket((hostname, port), ssl_wrap=https)
-    try:
-        sock.send(
-            f"POST /{path} HTTP/1.1\r\n"
-            f"Host: {hostname}\r\n"
-            f"Content-Length: {len(payload)}\r\n"
-            "Content-Type: application/json\r\n"
-            "\r\n"
-            f"{payload}".encode())
-        sock.recv(4096)
-    finally:
-        shutdown_socket(sock)
+
+    for num in range(3):
+        sock = make_http_socket((hostname, port), ssl_wrap=https)
+        try:
+            sock.send(
+                f"POST /{path} HTTP/1.1\r\n"
+                f"Host: {hostname}\r\n"
+                f"Content-Length: {len(payload)}\r\n"
+                "Content-Type: application/json\r\n"
+                "\r\n"
+                f"{payload}".encode())
+            sock.recv(4096)
+            return
+        except Exception as err:
+            print(f"Error while sending webhook (attempt #{num}): {err!r}")
+        finally:
+            shutdown_socket(sock)
 
 def make_embed(group_info, date):
     return dict(
