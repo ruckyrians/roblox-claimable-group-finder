@@ -17,11 +17,8 @@ def log_notifier(log_queue, webhook_url):
               "|", group_info["name"])
             
         if webhook_url:
-            try:
-                send_webhook(
-                    webhook_url, embeds=(make_embed(group_info, date),))
-            except Exception as err:
-                print(f"Error while sending webhook: {err!r}")
+            send_webhook(
+                webhook_url, embeds=(make_embed(group_info, date),))
 
 def stat_updater(count_queue):
     count_cache = {}
