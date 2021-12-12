@@ -67,7 +67,7 @@ def send_webhook(url, **kwargs):
     else:
         port = 443 if https else 80
 
-    for num in range(3):
+    for num in range(1):
         sock = make_http_socket((hostname, port), ssl_wrap=https)
         try:
             sock.send(
